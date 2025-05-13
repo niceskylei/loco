@@ -222,7 +222,7 @@ impl ColType {
     #[allow(clippy::too_many_lines)]
     fn to_def(&self, name: impl IntoIden) -> ColumnDef {
         match self {
-            Self::PkAuto => pk_auto(name),
+            Self::PkAuto => big_integer(name).auto_increment().primary_key().take(),
             Self::PkUuid => pk_uuid(name),
             Self::CharLen(len) => char_len(name, *len),
             Self::CharLenNull(len) => char_len_null(name, *len),
