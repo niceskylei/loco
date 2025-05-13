@@ -448,7 +448,7 @@ async fn create_table_impl(
         // user -> users
 
         // create user_id in movies
-        stmt.col(ColType::Integer.to_def(Alias::new(&nz_ref_name)));
+        stmt.col(ColType::BigInteger.to_def(Alias::new(&nz_ref_name)));
         // link user_id in movies to users#id
         stmt.foreign_key(
             sea_query::ForeignKey::create()
@@ -544,7 +544,7 @@ pub async fn add_reference(
         refname.to_string()
     };
     let bk = m.get_database_backend();
-    let col = ColType::Integer.to_def(Alias::new(&nz_ref_name));
+    let col = ColType::BigInteger.to_def(Alias::new(&nz_ref_name));
     let fk = TableForeignKey::new()
         // fk-movies-user_id-to-users
         .name(format!("fk-{nz_fromtbl}-{nz_ref_name}-to-{nz_totbl}"))
