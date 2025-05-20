@@ -126,6 +126,18 @@ When a model is added via migration, the following default fields are provided:
 
 These fields are ignored if you provide them in your migration command.
 
+### Field syntax
+
+Each field type may include either the `!` or `^` suffix:
+
+- `!` indicates that the field is **required** (i.e. `NOT NULL` in the database),
+- `^` indicates that the field must be **unique**.
+
+If no suffix is used, then the field can be null.
+
+
+### Data types
+
 For schema data types, you can use the following mapping to understand the schema:
 
 ```rust
@@ -972,3 +984,18 @@ async fn can_create_user() {
 ```
 
 You can also use cleanup constants directly, starting with `CLEANUP_`.
+
+## Customizing Entity Generation
+
+You can customize how `sea-orm-cli` generates entities by adding configuration to your `Cargo.toml` under the `[package.metadata.db.entity]` section. For example:
+
+```toml
+[package.metadata.db.entity]
+max-connections = 1
+ignore-tables = "table1,table2"
+model-extra-derives = "CustomDerive"
+```
+
+This configuration will be passed as flags to `sea-orm-cli generate entity` when running `cargo loco db entities`.
+
+Note that some flags like `--output-dir` and `--database-url` cannot be overridden as they are managed by Loco.
