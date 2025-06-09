@@ -3,10 +3,10 @@ source: tests/build_scripts/embedded_assets.rs
 expression: template_content
 snapshot_kind: text
 ---
-/// Returns a BTreeMap of templates in dependency order (parents before children)
+/// Returns a IndexMap of templates in dependency order (parents before children)
 #[must_use]
-pub fn get_embedded_templates() -> std::collections::BTreeMap<String, &'static str> {
-    let mut templates = std::collections::BTreeMap::new();
+pub fn get_embedded_templates() -> indexmap::IndexMap<String, &'static str> {
+    let mut templates = indexmap::IndexMap::new();
     // Base template with no parent
     templates.insert("base.html".to_string(), include_str!("[TEST_ROOT]/assets/views/base.html"));
     // Base template with no parent

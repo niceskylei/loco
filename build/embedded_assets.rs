@@ -207,8 +207,10 @@ pub fn generate_asset_code(
                 .extension()
                 .is_some_and(|ext| ext.eq_ignore_ascii_case("htm")))
         {
+            println!("cargo:warning=add template {key}");
             template_files.push((path.clone(), key.clone()));
         } else {
+            println!("cargo:warning=add static {key}");
             static_assets.push((path.clone(), key.clone()));
         }
     }
@@ -363,9 +365,9 @@ pub fn generate_asset_code(
         "/// Returns a BTreeMap of templates in dependency order (parents before children)\n"
             .to_string(),
         "#[must_use]\n".to_string(),
-        "pub fn get_embedded_templates() -> std::collections::BTreeMap<String, &'static str> {\n"
+        "pub fn get_embedded_templates() -> indexmap::IndexMap<String, &'static str> {\n"
             .to_string(),
-        "    let mut templates = std::collections::BTreeMap::new();\n".to_string(),
+        "    let mut templates = sindexmap::IndexMap::new();\n".to_string(),
     ];
 
     // Add templates in dependency order with comments
@@ -409,9 +411,9 @@ pub fn generate_empty_asset_files(output_path: &Path) -> io::Result<()> {
     // Generate empty static assets file
     let static_file = output_path.join("static_assets.rs");
     let static_code = r"#[must_use]
-pub fn get_embedded_static_assets() -> std::collections::HashMap<String, &'static [u8]> {
+pub fn get_embedded_static_assets() -> sindexmap::IndexMap<String, &'static [u8]> {
     // No assets found
-    std::collections::HashMap::new()
+    indexmap::IndexMap::new()
 }
 ";
     let mut file = File::create(static_file)?;
@@ -420,9 +422,9 @@ pub fn get_embedded_static_assets() -> std::collections::HashMap<String, &'stati
     // Generate empty templates file
     let templates_file = output_path.join("view_templates.rs");
     let templates_code = r"#[must_use]
-pub fn get_embedded_templates() -> std::collections::HashMap<String, &'static str> {
+pub fn get_embedded_templates() -> indexmap::IndexMap<String, &'static str> {
     // No templates found
-    std::collections::HashMap::new()
+    indexmap::IndexMap::new()
 }
 ";
     let mut file = File::create(templates_file)?;

@@ -4,8 +4,8 @@ expression: template_content
 snapshot_kind: text
 ---
 #[must_use]
-pub fn get_embedded_templates() -> std::collections::HashMap<String, &'static str> {
-    let mut templates = std::collections::HashMap::new();
+pub fn get_embedded_templates() -> indexmap::IndexMap<String, &'static str> {
+    let mut templates = indexmap::IndexMap::new();
     // Debug log of template keys for inheritance:
     // Template key: "base.html"
     // Template key: "posts/list.html"
