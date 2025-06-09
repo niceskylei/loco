@@ -70,6 +70,16 @@ pub fn build_static_assets(out_dir: &Path) {
 }
 
 pub fn find_app_directory(out_dir: &Path) -> Option<PathBuf> {
+    // First check if LOCO_APP_PATH environment variable is set
+    if let Ok(app_path) = env::var("LOCO_APP_PATH") {
+        let path = PathBuf::from(app_path);
+        if path.exists() {
+            println!("cargo:warning=Using LOCO_APP_PATH environment variable for application directory");
+            return Some(path);
+        }
+        println!("cargo:warning=LOCO_APP_PATH environment variable is set but path does not exist");
+    }
+    
     // Find project root from OUT_DIR by going up to parent of "target" directory
     let mut path = out_dir.to_path_buf();
     while path.pop() {
