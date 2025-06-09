@@ -55,14 +55,14 @@ impl TeraView {
     ///
     /// Returns an error if adding a template fails
     fn load_templates_into_tera(tera: &mut tera::Tera) -> Result<()> {
-        let templates_map = get_embedded_templates();
-        let templates: BTreeMap<_, _> = templates_map.into_iter().collect();
+        let templates: indexmap::IndexMap<String, &'static str> = get_embedded_templates();
+        // let templates: BTreeMap<_, _> = templates_map.into_iter().collect();
         Self::log_template_info(&templates);
         Self::add_templates_to_tera(tera, templates)
     }
 
     /// Log information about the templates
-    fn log_template_info(templates: &BTreeMap<String, &'static str>) {
+    fn log_template_info(templates: &indexmap::IndexMap<String, &'static str>) {
         tracing::info!("Initializing embedded templates feature");
         tracing::info!("Found {} embedded templates", templates.len());
     }
@@ -74,7 +74,7 @@ impl TeraView {
     /// Returns an error if adding any template fails
     fn add_templates_to_tera(
         tera: &mut tera::Tera,
-        templates: BTreeMap<String, &'static str>,
+        templates: indexmap::IndexMap<String, &'static str>,
     ) -> Result<()> {
         // Add all templates to Tera
         for (name, content) in templates {
