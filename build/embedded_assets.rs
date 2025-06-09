@@ -367,7 +367,7 @@ pub fn generate_asset_code(
         "#[must_use]\n".to_string(),
         "pub fn get_embedded_templates() -> indexmap::IndexMap<String, &'static str> {\n"
             .to_string(),
-        "    let mut templates = sindexmap::IndexMap::new();\n".to_string(),
+        "    let mut templates = indexmap::IndexMap::new();\n".to_string(),
     ];
 
     // Add templates in dependency order with comments
@@ -411,7 +411,7 @@ pub fn generate_empty_asset_files(output_path: &Path) -> io::Result<()> {
     // Generate empty static assets file
     let static_file = output_path.join("static_assets.rs");
     let static_code = r"#[must_use]
-pub fn get_embedded_static_assets() -> sindexmap::IndexMap<String, &'static [u8]> {
+pub fn get_embedded_static_assets() -> indexmap::IndexMap<String, &'static [u8]> {
     // No assets found
     indexmap::IndexMap::new()
 }
