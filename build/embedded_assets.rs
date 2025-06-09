@@ -200,12 +200,12 @@ pub fn generate_asset_code(
 
     // Simple categorization: if file ends with .html or .htm, it's a template, otherwise static asset
     for (path, key) in all_files {
-        if std::path::Path::new(key)
+        if !key.starts_with("/static") && (std::path::Path::new(key)
             .extension()
             .is_some_and(|ext| ext.eq_ignore_ascii_case("html"))
             || std::path::Path::new(key)
                 .extension()
-                .is_some_and(|ext| ext.eq_ignore_ascii_case("htm"))
+                .is_some_and(|ext| ext.eq_ignore_ascii_case("htm")))
         {
             template_files.push((path.clone(), key.clone()));
         } else {
