@@ -22,6 +22,8 @@ pub fn build_static_assets(out_dir: &Path) {
     println!("cargo:rerun-if-changed={app_dir_str}/src/assets/");
     // Also run build script again if the build files change
     println!("cargo:rerun-if-changed=build/embedded_assets.rs");
+    // Run build script again if LOCO_APP_PATH environment variable changes
+    println!("cargo:rerun-if-env-changed=LOCO_APP_PATH");
 
     let generated_path = out_dir.join("generated_code");
 
