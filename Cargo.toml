@@ -8,13 +8,13 @@ rust-version = "1.70"
 license = "Apache-2.0"
 
 [package]
-name = "loco-rs"
+name = "by-loco"
 version = "0.15.0"
 description = "The one-person framework for Rust"
 homepage = "https://loco.rs/"
 documentation = "https://docs.rs/loco-rs"
 authors = ["Dotan Nahum <dotan@rng0.io>", "Elad Kaplan <kaplan.elad@gmail.com>"]
-repository = "https://github.com/loco-rs/loco"
+repository = "https://github.com/niceskylei/loco"
 license.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -201,7 +201,7 @@ features = [
 features = ["testing"]
 
 [dev-dependencies]
-loco-rs = { path = ".", features = ["testing"] }
+by-loco = { path = ".", features = ["testing"] }
 rstest = "0.21.0"
 insta = { version = "1.34.0", features = ["redactions", "yaml", "filters"] }
 tree-fs = { version = "0.3" }
