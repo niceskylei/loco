@@ -201,7 +201,7 @@ features = [
 features = ["testing"]
 
 [dev-dependencies]
-by-loco = { path = ".", features = ["testing"] }
+loco-rs = { version = "0.15.0", features = ["testing"], package = "by-loco" }
 rstest = "0.21.0"
 insta = { version = "1.34.0", features = ["redactions", "yaml", "filters"] }
 tree-fs = { version = "0.3" }
