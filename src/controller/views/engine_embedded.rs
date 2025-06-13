@@ -1,7 +1,7 @@
+use serde::Serialize;
+
 use super::tera_builtins;
 use crate::{controller::views::ViewRenderer, Result};
-use serde::Serialize;
-use std::collections::BTreeMap;
 
 pub static DEFAULT_ASSET_FOLDER: &str = "assets";
 
