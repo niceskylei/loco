@@ -1,8 +1,9 @@
 use std::path::{Path, PathBuf};
 
+use serde::Serialize;
+
 use super::tera_builtins;
 use crate::{controller::views::ViewRenderer, Error, Result};
-use serde::Serialize;
 
 pub static DEFAULT_ASSET_FOLDER: &str = "assets";
 
@@ -76,13 +77,25 @@ impl TeraView {
 
 impl ViewRenderer for TeraView {
     fn render<S: Serialize>(&self, key: &str, data: S) -> Result<String> {
+        #[cfg(debug_assertions)]
+        use std::borrow::BorrowMut;
+
         let context = tera::Context::from_serialize(data)?;
 
         #[cfg(debug_assertions)]
         {
             tracing::debug!(key = key, "Tera rendering in non-optimized debug mode");
-            let tera = Self::create_tera_instance(&self.view_dir)?;
-            Ok(tera.render(key, &context)?)
+
+            return Ok(self
+                .tera
+                .lock()
+                .expect("render tera already locked")
+                .borrow_mut()
+                .render_str(
+                    &std::fs::read_to_string(std::path::Path::new(&self.view_dir).join(key))
+                        .map_err(|_e| tera::Error::template_not_found(key))?,
+                    &context,
+                )?);
         }
 
         #[cfg(not(debug_assertions))]
