@@ -75,7 +75,7 @@ use colored::Colorize;
 pub use routes::Routes;
 use serde::Serialize;
 
-use crate::{errors::Error, Result};
+use crate::{errors::Error, model::ModelError, Result};
 
 mod app_routes;
 mod backtrace;
@@ -251,9 +251,25 @@ impl IntoResponse for Error {
                     )
                 },
             ),
-            _ => (
+            Self::Model(ModelError::EntityNotFound) => (
+                StatusCode::UNAUTHORIZED,
+                ErrorDetail::new("unauthorized", "Entity not found"),
+            ),
+            Self::Model(ModelError::EntityAlreadyExists) => (
+                StatusCode::BAD_REQUEST,
+                ErrorDetail::new("bad_request", "Entity already exists"),
+            ),
+            Self::Model(ModelError::Jwt(e)) => (
+                StatusCode::UNAUTHORIZED,
+                ErrorDetail::new("unauthorized", &e.to_string()),
+            ),
+            Self::Model(ModelError::Validation(e)) => (
+                StatusCode::BAD_REQUEST,
+                ErrorDetail::new("bad_request", &e.to_string()),
+            ),
+            info => (
                 StatusCode::INTERNAL_SERVER_ERROR,
-                ErrorDetail::new("internal_server_error", "Internal Server Error"),
+                ErrorDetail::new("internal_server_error", &info.to_string()),
             ),
         };
 
